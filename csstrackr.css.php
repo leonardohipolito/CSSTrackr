@@ -16,11 +16,8 @@ if(isset($_SERVER['HTTP_USER_AGENT']) && in_array(strtolower($_SERVER['HTTP_USER
   exit;
 } else {
   foreach($banned_ips as $ip) {
-    $ip = str_replace(".", "\\.", $ip);
-    $ip = str_replace("*", ".*", $ip);
-    $ip = "/^".$ip."/";
-    if(preg_match($ip, $_SERVER['REMOTE_ADDR'])){
-      echo "/*blocked ip range*/";
+    if($ip==substr($_SERVER['REMOTE_ADDR'], 0,strlen($ip))){
+      echo "/*blocked ip by like*/";
       exit;
     }
   }
@@ -36,7 +33,10 @@ if (isset($actions['click']) && !empty($actions['click'])){
   /* <style> */
     <?= $selector?>:active::after {
         content: url("index.php?action=click&value=<?= urlencode($value)?>");
-        display: block;
+        display: inline-block;
+        position: absolute;
+        top: 0px;
+        left: 0px;
         margin: 0px;
         width: 0px;
         height: 0px;
@@ -49,7 +49,10 @@ if (isset($actions['hover']) && !empty($actions['hover'])){
   foreach($actions['hover'] as $selector=>$value){?>
     <?= $selector?>:hover::before {
         content: url("index.php?action=hover&value=<?= urlencode($value)?>");
-        display: block;
+        display: inline-block;
+        position: absolute;
+        top: 0px;
+        left: 0px;
         margin: 0px;
         width: 0px;
         height: 0px;
@@ -107,34 +110,88 @@ if (isset($actions['hoverhold']) && !empty($actions['hoverhold'])){
 /** http://browserhacks.com/ **/
 @supports (-webkit-appearance:none) and (not (-ms-ime-align:auto)){
     body::before {
-        content: url("index.php?action=browser&value=chrome");
+        content: "";
+        -moz-animation: keyframeCHROME 10s;
+        -webkit-animation: keyframeCHROME 10s;
+        animation: keyframeCHROME 10s;
+        animation-name: keyframeCHROME;
+        animation-duration: 10s;
         display: block;
         margin: 0px;
         width: 0px;
         height: 0px;
         padding: 0px;
+    }
+    @keyframes keyframeCHROME {
+        0% {background-image: none;}
+        10% {background-image: url("index.php?action=browser&value=chrome")}
+        20% {background-image: none}
+        30% {background-image: none}
+        40% {background-image: none}
+        50% {background-image: none}
+        60% {background-image: none}
+        70% {background-image: none}
+        80% {background-image: none}
+        90% {background-image: none}
+        100% {background-image: none}
     }
 }
 
 @media screen and (min--moz-device-pixel-ratio:0) {
     body::before {
-        content: url("index.php?action=browser&value=firefox");
+        content: "";
+        -moz-animation: keyframeFIREFOX 10s;
+        -webkit-animation: keyframeFIREFOX 10s;
+        animation: keyframeFIREFOX 10s;
+        animation-name: keyframeFIREFOX;
+        animation-duration: 10s;
         display: block;
         margin: 0px;
         width: 0px;
         height: 0px;
         padding: 0px;
     }
+    @keyframes keyframeFIREFOX {
+        0% {background-image: none;}
+        10% {background-image: url("index.php?action=browser&value=firefox")}
+        20% {background-image: none}
+        30% {background-image: none}
+        40% {background-image: none}
+        50% {background-image: none}
+        60% {background-image: none}
+        70% {background-image: none}
+        80% {background-image: none}
+        90% {background-image: none}
+        100% {background-image: none}
+    }
 }
 
 @supports (-ms-ime-align:auto) {
     body::before {
-        content: url("index.php?action=browser&value=edge");
+        content: "";
+        -moz-animation: keyframeEDGE 10s;
+        -webkit-animation: keyframeEDGE 10s;
+        animation: keyframeEDGE 10s;
+        animation-name: keyframeEDGE;
+        animation-duration: 10s;
         display: block;
         margin: 0px;
         width: 0px;
         height: 0px;
         padding: 0px;
+    }
+    @keyframes keyframeEDGE {
+        0% {background-image: none;}
+        10% {background-image: url("index.php?action=browser&value=edge")}
+        20% {background-image: none}
+        30% {background-image: none}
+        40% {background-image: none}
+        50% {background-image: none}
+        60% {background-image: none}
+        70% {background-image: none}
+        80% {background-image: none}
+        90% {background-image: none}
+        100% {background-image: none}
     }
 }
 
@@ -142,23 +199,59 @@ if (isset($actions['hoverhold']) && !empty($actions['hoverhold'])){
 
 @media (orientation: portrait) {
     html::after {
-        content: url("index.php?action=orientation&value=portrait");
+        content: "";
+        -moz-animation: keyframePORTRAIT 10s;
+        -webkit-animation: keyframePORTRAIT 10s;
+        animation: keyframePORTRAIT 10s;
+        animation-name: keyframePORTRAIT;
+        animation-duration: 10s;
         display: block;
         margin: 0px;
         width: 0px;
         height: 0px;
         padding: 0px;
     }
+    @keyframes keyframePORTRAIT {
+        0% {background-image: none;}
+        10% {background-image: none}
+        20% {background-image: none}
+        30% {background-image: none}
+        40% {background-image: none}
+        50% {background-image: url("index.php?action=orientation&value=portrait")}
+        60% {background-image: none}
+        70% {background-image: none}
+        80% {background-image: none}
+        90% {background-image: none}
+        100% {background-image: none}
+    }
 }
 
 @media (orientation: landscape) {
     html::after {
-        content: url("index.php?action=orientation&value=landscape");
+        content: "";
+        -moz-animation: keyframeLANDSCAPE 10s;
+        -webkit-animation: keyframeLANDSCAPE 10s;
+        animation: keyframeLANDSCAPE 10s;
+        animation-name: keyframeLANDSCAPE;
+        animation-duration: 10s;
         display: block;
         margin: 0px;
         width: 0px;
         height: 0px;
         padding: 0px;
+    }
+    @keyframes keyframeLANDSCAPE {
+        0% {background-image: none;}
+        10% {background-image: none}
+        20% {background-image: none}
+        30% {background-image: none}
+        40% {background-image: none}
+        50% {background-image: url("index.php?action=orientation&value=landscape")}
+        60% {background-image: none}
+        70% {background-image: none}
+        80% {background-image: none}
+        90% {background-image: none}
+        100% {background-image: none}
     }
 }
 
@@ -167,59 +260,149 @@ if (isset($actions['hoverhold']) && !empty($actions['hoverhold'])){
 /* xs */
 @media (max-width: 767px) {
   body::after {
-      content: url("index.php?action=viewport&value=xs");
+      content: "";
+      -moz-animation: keyframeWIDTH 10s;
+      -webkit-animation: keyframeWIDTH 10s;
+      animation: keyframeWIDTH 10s;
+      animation-name: keyframeWIDTH;
+      animation-duration: 10s;
       display: block;
       margin: 0px;
       width: 0px;
       height: 0px;
       padding: 0px;
+  }
+  @keyframes keyframeWIDTH {
+      0% {background-image: none;}
+      10% {background-image: none}
+      20% {background-image: none}
+      30% {background-image: none}
+      40% {background-image: none}
+      50% {background-image: none}
+      60% {background-image: none}
+      70% {background-image: none}
+      80% {background-image: none}
+      90% {background-image: none}
+      100% {background-image: url("index.php?action=viewport&value=xs")}
   }
 }
 
 /* sm */
 @media (min-width: 768px) and (max-width: 991px) {
    body::after {
-       content: url("index.php?action=viewport&value=sm");
+       content: "";
+       -moz-animation: keyframeWIDTH 10s;
+       -webkit-animation: keyframeWIDTH 10s;
+       animation: keyframeWIDTH 10s;
+       animation-name: keyframeWIDTH;
+       animation-duration: 10s;
        display: block;
        margin: 0px;
        width: 0px;
        height: 0px;
        padding: 0px;
    }
+   @keyframes keyframeWIDTH {
+       0% {background-image: none;}
+       10% {background-image: none}
+       20% {background-image: none}
+       30% {background-image: none}
+       40% {background-image: none}
+       50% {background-image: none}
+       60% {background-image: none}
+       70% {background-image: none}
+       80% {background-image: none}
+       90% {background-image: none}
+       100% {background-image: url("index.php?action=viewport&value=sm")}
+   }
 }
 
 /* md */
 @media (min-width: 992px) and (max-width: 1199px) {
   body::after {
-      content: url("index.php?action=viewport&value=md");
+      content: "";
+      -moz-animation: keyframeWIDTH 10s;
+      -webkit-animation: keyframeWIDTH 10s;
+      animation: keyframeWIDTH 10s;
+      animation-name: keyframeWIDTH;
+      animation-duration: 10s;
       display: block;
       margin: 0px;
       width: 0px;
       height: 0px;
       padding: 0px;
+  }
+  @keyframes keyframeWIDTH {
+      0% {background-image: none;}
+      10% {background-image: none}
+      20% {background-image: none}
+      30% {background-image: none}
+      40% {background-image: none}
+      50% {background-image: none}
+      60% {background-image: none}
+      70% {background-image: none}
+      80% {background-image: none}
+      90% {background-image: none}
+      100% {background-image: url("index.php?action=viewport&value=md")}
   }
 }
 
 /* lg */
 @media (min-width: 1200px) and (max-width: 1920px){
   body::after {
-      content: url("index.php?action=viewport&value=lg");
+      content: "";
+      -moz-animation: keyframeWIDTH 10s;
+      -webkit-animation: keyframeWIDTH 10s;
+      animation: keyframeWIDTH 10s;
+      animation-name: keyframeWIDTH;
+      animation-duration: 10s;
       display: block;
       margin: 0px;
       width: 0px;
       height: 0px;
       padding: 0px;
   }
+  @keyframes keyframeWIDTH {
+      0% {background-image: none;}
+      10% {background-image: none}
+      20% {background-image: none}
+      30% {background-image: none}
+      40% {background-image: none}
+      50% {background-image: none}
+      60% {background-image: none}
+      70% {background-image: none}
+      80% {background-image: none}
+      90% {background-image: none}
+      100% {background-image: url("index.php?action=viewport&value=lg")}
+  }
 }
 
 /* xlg */
 @media (min-width: 1921px) {
   body::after {
-      content: url("index.php?action=viewport&value=xlg");
+      content: "";
+      -moz-animation: keyframeWIDTH 10s;
+      -webkit-animation: keyframeWIDTH 10s;
+      animation: keyframeWIDTH 10s;
+      animation-name: keyframeWIDTH;
+      animation-duration: 10s;
       display: block;
       margin: 0px;
       width: 0px;
       height: 0px;
       padding: 0px;
+  }
+  @keyframes keyframeWIDTH {
+      0% {background-image: none;}
+      10% {background-image: none}
+      20% {background-image: none}
+      30% {background-image: none}
+      40% {background-image: none}
+      50% {background-image: none}
+      60% {background-image: none}
+      70% {background-image: none}
+      80% {background-image: none}
+      90% {background-image: none}
+      100% {background-image: url("index.php?action=viewport&value=xlg")}
   }
 }
